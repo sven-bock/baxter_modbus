@@ -43,16 +43,18 @@ import random
 if __name__=="__main__":
     port = 502
     
-    num_wifiblocks = 0
+    
     input_line = 0
     def read_callback(*msg):
         
         if msg[1] is True and msg[0] == input_line: # if signal is high and address is 0
             defective = random.randint(0,4)
-            print "test result",defective
+            
             if defective == 0:
+                print "Part defective"
                 mws.triggerInput(1,3.0)# args: address , time to raise level - default 0.5
             else:
+                print "Part OK"
                 mws.triggerInput(0,3.0)# args: address , time to raise level - default 0.5
         
     mws = ModbusWrapperServer(port)
