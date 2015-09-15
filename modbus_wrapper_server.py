@@ -43,6 +43,9 @@
 from post_threading import Post
 from signals import Signal
 import time
+import sys
+
+sys.path.append('/home/pi/pymodbus')
 
 try:
     from pymodbus.server.sync import ModbusSocketFramer, ModbusTcpServer
@@ -93,9 +96,7 @@ class CustomHoldingRegister(ModbusSequentialDataBlock):
             :param values: The new values to be set
             :type values: list[int]
         """
-        #print "address",address,"value",value
-        
-        
+        #print "address",address,"value",value  
         ModbusSequentialDataBlock.setValues(self,address, value)
         
             
@@ -160,6 +161,7 @@ class ModbusWrapperServer():
         """
             Closes the server
         """
+        self.onShutdown = True
         self.server.server_close()
         self.server.shutdown()
         
@@ -187,8 +189,7 @@ class ModbusWrapperServer():
                 old_state = value
                 self.state_changed(address,value)
                 #print "state has changed"
-            time.sleep(1/50)
-    
+            time.sleep(1/50) 
     
     def setDigitalInput(self,address,values):
         if not values is list:
